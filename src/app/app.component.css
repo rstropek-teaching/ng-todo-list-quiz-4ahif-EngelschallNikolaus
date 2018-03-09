@@ -1,0 +1,35 @@
+.block-left{
+    margin: 50px;
+    padding: 20px;
+    float: left;
+    border: 5px solid #6877bb;
+}
+.block-right{
+    margin: 50px;
+    padding: 20px;
+    float: right;
+    border: 5px solid #6234bb;
+}
+
+.filter{
+    border: 5px solid #6877bb;
+    padding: 10px;
+}
+
+.inner_filter{
+    display: inline-block;
+    padding: 20px;
+}
+
+.todo {
+    border: 5px solid #6877bb;
+    padding: 10px;
+}
+.new{
+    border: 5px solid #6234bb;
+    padding: 20px;
+}
+
+.description{
+    border: none;
+}

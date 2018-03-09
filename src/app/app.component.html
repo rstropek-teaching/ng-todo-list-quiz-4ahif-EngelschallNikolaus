@@ -1,0 +1,89 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+</div>
+
+<div class="block-left">
+  <div class="filter" align="center">
+    <b>List of Filters</b>
+    <form>
+      <div class="inner_filter" align="left">
+        Filter Assignee
+        <br/>
+        <select (change)="filterNames()" id="filter_names">
+          <option>No Filter</option>
+          <option *ngFor="let person of people | async">{{person.name}}</option>
+        </select>
+      </div>
+      <div class="inner_filter" align="right">
+        Filter by Done
+        <br/>
+        <select (change)="filterDones()" id="filter_dones">
+          <option>No Filter</option>
+          <option>Done</option>
+          <option>Undone</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <br/>
+  <div class="todo">
+    <b>List of ToDo Items</b>
+    <br/>
+    <br/>
+    <table id="todo_items">
+      <button [innerHTML]="edit ? 'Finish Editing' : 'Edit'" (click)="edit=!edit"></button>
+      <tr align="left">
+        <th>Description</th>
+        <th>Assigned To</th>
+        <th>Done</th>
+        <th>Delete</th>
+      </tr>
+      <!-- starting the list of todo items and basically doing all the filtering with binding to the 'hidden'-property -->
+      <tr *ngFor="let todo of todos" id={{todo.id}} [hidden]="(nameFilter !== 'No Filter' && nameFilter!== todo.assignedTo) || (doneFilter !== 'No Filter' && doneFilter !== ((todo.done) ? 'Done' : 'Undone'))">
+        <!-- description of the todo items -->
+        <td>
+          <input id="description{{todo.id}}" type="text" value="{{ todo.description }}" class="description" [readOnly]="!edit" (change)="save(todo.id, 'description')"
+          />
+        </td>
+        <!-- assignee of the todo items -->
+        <td>
+          <select id="assignedTo{{todo.id}}" [hidden]="!edit" (change)="save(todo.id, 'assignedTo')">
+            <option *ngFor="let person of people | async" [selected]="person.name===todo.assignedTo">
+              {{person.name}}
+            </option>
+          </select>
+          <label [hidden]="edit">{{todo.assignedTo}}</label>
+        </td>
+        <!-- done flag of the todo items -->
+        <td>
+          <input id="done{{todo.id}}" type="checkbox" [checked]=todo.done [readOnly]="!edit" (change)="save(todo.id, 'done')" />
+        </td>
+        <td>
+          <button (click)="delete(todo.id)">Delete</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<!-- section where user can create new Todo Item -->
+<div class="block-right">
+  <div class="new">
+    <b>Create new Todo Item:</b>
+    <br/> Description
+    <br/>
+    <input type="text" [(ngModel)]="new_description" id="new_description" />
+
+    <div>
+      <br/> Assign To:
+      <br/>
+      <select id="new_assignee">
+        <option *ngFor="let person of people | async">{{person.name}}</option>
+      </select>
+    </div>
+    <br/>
+    <button (click)="createNewTodoItem()" [disabled]="new_description==undefined || new_description==''">Create</button>
+  </div>
+</div>
